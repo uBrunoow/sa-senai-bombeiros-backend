@@ -8,7 +8,8 @@ from django.db import transaction
 class UserReadOnlySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "name", "email", "created_at", "updated_at"]
+        fields = ["id", "last_name", "first_name",  "email",
+                  "created_at", "updated_at"]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -18,7 +19,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "password", "last_name", "first_name", "created_at", "updated_at"]
+        fields = ["id", "email", "password", "last_name",
+                  "first_name", "created_at", "updated_at"]
         extra_kwargs = {
             "password": {"write_only": True},
             "id": {"read_only": True},
@@ -113,11 +115,16 @@ class ProfileTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["user"] = UserCompleteReadOnlySerializer(self.user).data
 
         return data
-    
+
+
 class AdminReadOnlySerializer(serializers.ModelSerializer):
+    user = UserRegisterSerializer(required=True)
+
     class Meta:
         model = Admin
-        fields = ["id", "user", "phone", "cpf", "address", "address_number", "address_complement", "city", "state", "zipcode", "created_at", "updated_at"]
+        fields = ["id", "user", "phone", "cpf", "address", "address_number",
+                  "address_complement", "city", "state", "zipcode", "created_at", "updated_at"]
+
 
 class AdminRegisterSerializer(serializers.ModelSerializer):
     user = UserRegisterSerializer(required=True)
@@ -143,9 +150,22 @@ class AdminRegisterSerializer(serializers.ModelSerializer):
 
 
 class FirefighterReadOnlySerializer(serializers.ModelSerializer):
+    user = UserReadOnlySerializer()
+
     class Meta:
         model = Firefighter
-        fields = ["id", "user", "phone", "cpf", "address", "address_number", "address_complement", "city", "state", "zipcode", "created_at", "updated_at"]
+        fields = ["id", "user", "phone", "cpf", "address", "address_number",
+                  "address_complement", "city", "state", "zipcode", "created_at", "updated_at"]
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', None)
+        if user_data:
+            user_serializer = self.fields['user']
+            user_instance = instance.user
+            user_serializer.update(user_instance, user_data)
+
+        return super().update(instance, validated_data)
+
 
 class FirefighterRegisterSerializer(serializers.ModelSerializer):
     user = UserRegisterSerializer(required=True)
@@ -163,7 +183,8 @@ class FirefighterRegisterSerializer(serializers.ModelSerializer):
         if user_serializer.is_valid():
             user = user_serializer.save()
 
-            firefighter = Firefighter.objects.create(user=user, **validated_data)
+            firefighter = Firefighter.objects.create(
+                user=user, **validated_data)
 
             return firefighter
         else:

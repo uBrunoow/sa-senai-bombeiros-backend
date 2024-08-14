@@ -36,10 +36,12 @@ class BrazilianState(models.TextChoices):
     TO = "TO", "Tocantins"
     DF = "DF", "Distrito Federal"
 
+
 class SexType(models.TextChoices):
     MALE = "MALE", "Male"
     FEMALE = "FEMALE", "Female"
     OTHER = "OTHER", "Other"
+
 
 class User(AbstractCUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -53,7 +55,6 @@ class User(AbstractCUser):
         auto_now=True, editable=False, null=True, blank=True
     )
 
-
     class Meta(AbstractCUser.Meta):
         swappable = "AUTH_USER_MODEL"
 
@@ -62,6 +63,7 @@ class User(AbstractCUser):
 
     def __str__(self):
         return self.email + " | " + self.first_name + " " + self.last_name
+
 
 class Admin(BaseModel):
     user = models.OneToOneField(
@@ -75,7 +77,8 @@ class Admin(BaseModel):
         help_text="Telefone principal para contato",
         verbose_name="Telefone",
     )
-    cpf = models.CharField(verbose_name="CPF", max_length=20, blank=True, null=True)
+    cpf = models.CharField(
+        verbose_name="CPF", max_length=20, blank=True, null=True)
     address = models.CharField(
         help_text="Endereço oficial", verbose_name="Endereço", max_length=100
     )
@@ -83,7 +86,8 @@ class Admin(BaseModel):
     address_complement = models.CharField(
         "Complemento", max_length=1000, null=True, blank=True
     )
-    city = models.CharField(help_text="Cidade", verbose_name="Cidade", max_length=50)
+    city = models.CharField(
+        help_text="Cidade", verbose_name="Cidade", max_length=50)
     state = models.CharField(
         help_text="Estado da federação",
         verbose_name="Estado",
@@ -93,7 +97,12 @@ class Admin(BaseModel):
     zipcode = models.CharField(help_text="CEP", max_length=20)
 
     def __str__(self):
-        return f'Admin {self.id} of user {self.user.name}'
+        return f'Admin | {self.user.name}'
+
+    class Meta:
+        verbose_name = "Administrador"
+        verbose_name_plural = "Administradores"
+
 
 class Firefighter(BaseModel):
     user = models.OneToOneField(
@@ -107,7 +116,8 @@ class Firefighter(BaseModel):
         help_text="Telefone principal para contato",
         verbose_name="Telefone",
     )
-    cpf = models.CharField(verbose_name="CPF", max_length=20, blank=True, null=True)
+    cpf = models.CharField(
+        verbose_name="CPF", max_length=20, blank=True, null=True)
     address = models.CharField(
         help_text="Endereço oficial", verbose_name="Endereço", max_length=100
     )
@@ -115,7 +125,8 @@ class Firefighter(BaseModel):
     address_complement = models.CharField(
         "Complemento", max_length=1000, null=True, blank=True
     )
-    city = models.CharField(help_text="Cidade", verbose_name="Cidade", max_length=50)
+    city = models.CharField(
+        help_text="Cidade", verbose_name="Cidade", max_length=50)
     state = models.CharField(
         help_text="Estado da federação",
         verbose_name="Estado",
@@ -125,4 +136,8 @@ class Firefighter(BaseModel):
     zipcode = models.CharField(help_text="CEP", max_length=20)
 
     def __str__(self):
-        return f'Firefighter {self.id} of user {self.user.name}'
+        return f'Bombeiro | {self.user.name}'
+
+    class Meta:
+        verbose_name = "Bombeiro"
+        verbose_name_plural = "Bombeiros"

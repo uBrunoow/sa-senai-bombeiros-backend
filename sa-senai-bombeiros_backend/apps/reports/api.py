@@ -28,7 +28,9 @@ from .models import (
     GestacionalAnamnesis,
     Cinematic,
     DisposableMaterials,
+    DisposableMaterialsStock,
     HospitalMaterials,
+    HospitalMaterialsStock,
     Report,
 )
 from .serializers import (
@@ -48,7 +50,9 @@ from .serializers import (
     GestacionalAnamnesisSerializer,
     CinematicSerializer,
     DisposableMaterialsSerializer,
+    DisposableMaterialsStockSerializer,
     HospitalMaterialsSerializer,
+    HospitalMaterialsStockSerializer,
     ReportSerializer,
     ReportRegisterSerializer,
 )
@@ -57,77 +61,106 @@ from rest_framework import filters
 # from django_filters.rest_framework import DjangoFilterBackend
 # from rest_framework import filters
 
+
 class TypeOfOccurrenceViewSet(viewsets.ModelViewSet):
     queryset = TypeOfOccurrence.objects.all()
     serializer_class = TypeOfOccurrenceSerializer
+
 
 class SuspectProblemsViewSet(viewsets.ModelViewSet):
     queryset = SuspectProblems.objects.all()
     serializer_class = SuspectProblemsSerializer
 
+
 class SignsAndSymptomsViewSet(viewsets.ModelViewSet):
     queryset = SignsAndSymptoms.objects.all()
     serializer_class = SignsAndSymptomsSerializer
+
 
 class GlasgowTypeViewSet(viewsets.ModelViewSet):
     queryset = GlasgowType.objects.all()
     serializer_class = GlasgowTypeSerializer
 
+
 class GlasgowViewSet(viewsets.ModelViewSet):
     queryset = Glasgow.objects.all()
     serializer_class = GlasgowSerializer
+
 
 class VitalSignsViewSet(viewsets.ModelViewSet):
     queryset = VitalSigns.objects.all()
     serializer_class = VitalSignsSerializer
 
+
 class DrivingStyleViewSet(viewsets.ModelViewSet):
     queryset = DrivingStyle.objects.all()
     serializer_class = DrivingStyleSerializer
+
 
 class VictimWasViewSet(viewsets.ModelViewSet):
     queryset = VictimWas.objects.all()
     serializer_class = VictimWasSerializer
 
+
 class TransportDecisionViewSet(viewsets.ModelViewSet):
     queryset = TransportDecision.objects.all()
     serializer_class = TransportDecisionSerializer
+
 
 class ServiceTeamViewSet(viewsets.ModelViewSet):
     queryset = ServiceTeam.objects.all()
     serializer_class = ServiceTeamSerializer
 
+
 class TransportInformationsViewSet(viewsets.ModelViewSet):
     queryset = TransportInformations.objects.all()
     serializer_class = TransportInformationsSerializer
+
 
 class ProceedingViewSet(viewsets.ModelViewSet):
     queryset = Proceeding.objects.all()
     serializer_class = ProceedingSerializer
 
+
 class AnamnesisViewSet(viewsets.ModelViewSet):
     queryset = Anamnesis.objects.all()
     serializer_class = AnamnesisSerializer
+
 
 class GestacionalAnamnesisViewSet(viewsets.ModelViewSet):
     queryset = GestacionalAnamnesis.objects.all()
     serializer_class = GestacionalAnamnesisSerializer
 
+
 class CinematicViewSet(viewsets.ModelViewSet):
     queryset = Cinematic.objects.all()
     serializer_class = CinematicSerializer
+
 
 class DisposableMaterialsViewSet(viewsets.ModelViewSet):
     queryset = DisposableMaterials.objects.all()
     serializer_class = DisposableMaterialsSerializer
 
+
+class DisposableMaterialsStockViewSet(viewsets.ModelViewSet):
+    queryset = DisposableMaterialsStock.objects.all()
+    serializer_class = DisposableMaterialsStockSerializer
+
+
 class HospitalMaterialsViewSet(viewsets.ModelViewSet):
     queryset = HospitalMaterials.objects.all()
     serializer_class = HospitalMaterialsSerializer
 
+
+class HospitalMaterialsStockViewSet(viewsets.ModelViewSet):
+    queryset = HospitalMaterialsStock.objects.all()
+    serializer_class = HospitalMaterialsStockSerializer
+
+
 class ReportViewSet(viewsets.ModelViewSet):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
+
 
 class ReportRegisterViewSet(
     mixins.CreateModelMixin,

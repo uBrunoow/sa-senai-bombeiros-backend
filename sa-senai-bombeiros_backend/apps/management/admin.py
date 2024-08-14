@@ -6,6 +6,7 @@ from apps.management.models import (
     Firefighter,
 )
 
+
 class UserAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "is_active", "is_superuser"]
 
@@ -28,16 +29,20 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 
+
 class AdminAdmin(admin.ModelAdmin):
-    list_display = ["id", "user"]
+    list_display = ["id", "user", "cpf", "phone"]
     search_fields = ["user"]
     readonly_fields = ["updated_at", "created_at"]
+
 
 admin.site.register(Admin, AdminAdmin)
 
+
 class FirefighterAdmin(admin.ModelAdmin):
-    list_display = ["id", "user"]
+    list_display = ["id", "user", "cpf", "phone"]
     search_fields = ["user"]
     readonly_fields = ["updated_at", "created_at"]
+
 
 admin.site.register(Firefighter, FirefighterAdmin)

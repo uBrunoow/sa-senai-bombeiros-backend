@@ -19,9 +19,14 @@ router.register("anamnesis", api.AnamnesisViewSet)
 router.register("gestacional_anamnesis", api.GestacionalAnamnesisViewSet)
 router.register("cinematic", api.CinematicViewSet)
 router.register("disposable_materials", api.DisposableMaterialsViewSet)
+router.register("disposable_materials_stock",
+                api.DisposableMaterialsStockViewSet)
 router.register("hospital_materials", api.HospitalMaterialsViewSet)
+router.register("hospital_materials_stock", api.HospitalMaterialsStockViewSet)
 router.register("report", api.ReportViewSet)
-router.register("report-register", api.ReportRegisterViewSet, basename="register-report")
+router.register("report-register", api.ReportRegisterViewSet,
+                basename="register-report")
+
 
 urlpatterns = [
     path("", include(router.urls)),

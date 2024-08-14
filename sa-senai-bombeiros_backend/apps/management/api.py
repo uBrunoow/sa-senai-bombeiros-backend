@@ -11,7 +11,7 @@ from rest_framework import (
     viewsets,
 )
 from utils.actions import DRFAction
-from .models import ( User, Admin, Firefighter)
+from .models import (User, Admin, Firefighter)
 from .serializers import (
     ProfileTokenObtainPairSerializer,
     UserChangePasswordSerializer,
@@ -24,9 +24,15 @@ from .serializers import (
     FirefighterReadOnlySerializer,
 )
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import SearchFilter
 from rest_framework import filters
-# from django_filters.rest_framework import DjangoFilterBackend
-# from rest_framework import filters
+
+
+class CustomPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = "page_size"
+    max_page_size = 1000
 
 
 class UserViewSet(
@@ -101,9 +107,14 @@ class UserChangePasswordView(generics.UpdateAPIView):
 class ProfileTokenObtainPairView(TokenObtainPairView):
     serializer_class = ProfileTokenObtainPairSerializer
 
+
 class AdminViewSet(viewsets.ModelViewSet):
     queryset = Admin.objects.all()
     serializer_class = AdminReadOnlySerializer
+    pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ["user__name"]
+
 
 class AdminRegister(
     mixins.CreateModelMixin,
@@ -117,9 +128,14 @@ class AdminRegister(
         res = super().perform_create(serializer)
         return res
 
+
 class FirefighterViewSet(viewsets.ModelViewSet):
     queryset = Firefighter.objects.all()
     serializer_class = FirefighterReadOnlySerializer
+    pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ["user__name"]
+
 
 class FirefighterRegister(
     mixins.CreateModelMixin,
